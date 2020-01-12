@@ -3,7 +3,7 @@ package com.example.javaallegroapi;
 import java.util.List;
 
 public class Category {
-    private List<CategoriesBean> categories;
+    public List<CategoriesBean> categories;
 
     public List<CategoriesBean> getCategories() {
         return categories;
@@ -22,51 +22,11 @@ public class Category {
          * options : {"variantsByColorPatternAllowed":true,"advertisement":false,"advertisementPriceOptional":false,"offersWithProductPublicationEnabled":false,"productCreationEnabled":false,"productEANRequired":false}
          */
 
-        private String id;
-        private String name;
-        private Object parent;
-        private boolean leaf;
-        private OptionsBean options;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public Object getParent() {
-            return parent;
-        }
-
-        public void setParent(Object parent) {
-            this.parent = parent;
-        }
-
-        public boolean isLeaf() {
-            return leaf;
-        }
-
-        public void setLeaf(boolean leaf) {
-            this.leaf = leaf;
-        }
-
-        public OptionsBean getOptions() {
-            return options;
-        }
-
-        public void setOptions(OptionsBean options) {
-            this.options = options;
-        }
+        public String id;
+        public String name;
+        public Object parent;
+        public boolean leaf;
+        public OptionsBean options;
 
         public static class OptionsBean {
             /**

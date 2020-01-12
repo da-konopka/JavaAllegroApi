@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        token1 = GetToken();
+        GetToken();
     }
 
 
@@ -69,11 +69,11 @@ public class MainActivity extends AppCompatActivity
     public void OpenCategoryActivity()
     {
         Intent intent = new Intent(this, CategoryActivity.class);
-        intent.putExtra("token", token1);
+        //intent.putExtra("token", token1);
         startActivity(intent);
     }
 
-    public String GetToken()
+    public void GetToken()
     {
         //sluzy, do synchronicznego odpytania api, inaczej jest blad
         //domyslnie api w androidzie jest odpytywane asynchronicznie i tak powinnno byc, bo wtedy UI nie bedzie blokowany dla usera
@@ -106,12 +106,11 @@ public class MainActivity extends AppCompatActivity
             //biblioteka do serializowania jsona na obiekt
             Gson gson = new Gson();
             Token token = gson.fromJson(bodyStr, Token.class);
-            return token.access_token;
-
+            String accessToken = token.access_token;
+            MainToken.token = token;
         }
         catch (Exception e) {
             System.out.println(e.toString());
-            return "";
             // Do something here
         }
     }
