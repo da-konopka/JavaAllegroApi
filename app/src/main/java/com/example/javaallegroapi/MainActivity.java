@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 
@@ -30,19 +32,29 @@ public class MainActivity extends AppCompatActivity
 
     private Button buttonSearch;
     private Button buttonCategory;
-    String token1;
+    private EditText searchingText;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        searchingText = (EditText) findViewById(R.id.productName);
         buttonSearch = (Button) findViewById(R.id.searchButton);
         buttonSearch.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                OpenProductInfoActivity();
+                if(searchingText.getText() != null)
+                {
+                    MainToken.searchingName = searchingText.getText().toString();
+                }
+                //dodac trim
+                if(MainToken.categoryId != null && MainToken.searchingName != null)
+                {
+                    OpenProductInfoActivity();
+                }
+
             }
         });
 
@@ -55,8 +67,8 @@ public class MainActivity extends AppCompatActivity
                 OpenCategoryActivity();
             }
         });
-
         GetToken();
+        GetCategory();
     }
 
 
@@ -75,8 +87,6 @@ public class MainActivity extends AppCompatActivity
 
     public void GetToken()
     {
-        //sluzy, do synchronicznego odpytania api, inaczej jest blad
-        //domyslnie api w androidzie jest odpytywane asynchronicznie i tak powinnno byc, bo wtedy UI nie bedzie blokowany dla usera
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -85,7 +95,6 @@ public class MainActivity extends AppCompatActivity
         String toEncode = clientId + ":" + secureId;
         String encodedBase64 = Base64.getEncoder().encodeToString(toEncode.getBytes());
 
-        //zewnetrzna bibloteka do odpytywania api
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         MediaType mediaType = MediaType.parse("text/plain");
         RequestBody body = RequestBody.create(mediaType, "");
@@ -97,13 +106,6 @@ public class MainActivity extends AppCompatActivity
         try {
             Response response = client.newCall(request).execute();
             String bodyStr = response.body().string();
-
-            //1 opcja
-            //JSONObject json = new JSONObject(bodyStr);
-            ////json.getString("access_token");
-
-            //2 opcja lepsza
-            //biblioteka do serializowania jsona na obiekt
             Gson gson = new Gson();
             Token token = gson.fromJson(bodyStr, Token.class);
             String accessToken = token.access_token;
@@ -111,7 +113,14 @@ public class MainActivity extends AppCompatActivity
         }
         catch (Exception e) {
             System.out.println(e.toString());
-            // Do something here
+        }
+    }
+
+    public void GetCategory()
+    {
+        if(MainToken.categoryName != null)
+        {
+            buttonCategory.setText(MainToken.categoryName);
         }
     }
 }
