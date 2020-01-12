@@ -28,14 +28,16 @@ import okhttp3.ResponseBody;
 public class MainActivity extends AppCompatActivity
 {
 
-    private Button button;
+    private Button buttonSearch;
+    private Button buttonCategory;
+    String token1;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        button = (Button) findViewById(R.id.searchButton);
-        button.setOnClickListener(new View.OnClickListener()
+        buttonSearch = (Button) findViewById(R.id.searchButton);
+        buttonSearch.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -43,10 +45,38 @@ public class MainActivity extends AppCompatActivity
                 OpenProductInfoActivity();
             }
         });
+
+        buttonCategory = (Button) findViewById(R.id.CategoryButton);
+        buttonCategory.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                OpenCategoryActivity();
+            }
+        });
+
+        token1 = GetToken();
     }
+
 
     public void OpenProductInfoActivity()
     {
+        Intent intent = new Intent(this, ProductInfoActivity.class);
+        startActivity(intent);
+    }
+
+    public void OpenCategoryActivity()
+    {
+        Intent intent = new Intent(this, CategoryActivity.class);
+        intent.putExtra("token", token1);
+        startActivity(intent);
+    }
+
+    public String GetToken()
+    {
+        //sluzy, do synchronicznego odpytania api, inaczej jest blad
+        //domyslnie api w androidzie jest odpytywane asynchronicznie i tak powinnno byc, bo wtedy UI nie bedzie blokowany dla usera
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -55,6 +85,7 @@ public class MainActivity extends AppCompatActivity
         String toEncode = clientId + ":" + secureId;
         String encodedBase64 = Base64.getEncoder().encodeToString(toEncode.getBytes());
 
+        //zewnetrzna bibloteka do odpytywania api
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         MediaType mediaType = MediaType.parse("text/plain");
         RequestBody body = RequestBody.create(mediaType, "");
@@ -72,17 +103,16 @@ public class MainActivity extends AppCompatActivity
             ////json.getString("access_token");
 
             //2 opcja lepsza
+            //biblioteka do serializowania jsona na obiekt
             Gson gson = new Gson();
             Token token = gson.fromJson(bodyStr, Token.class);
-            String accessToken = token.access_token;
-            String a = "";
+            return token.access_token;
+
         }
         catch (Exception e) {
             System.out.println(e.toString());
+            return "";
             // Do something here
         }
-
-        Intent intent = new Intent(this, ProductInfoActivity.class);
-        startActivity(intent);
     }
 }
