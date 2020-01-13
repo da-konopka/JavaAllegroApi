@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity
                 {
                     MainToken.searchingName = searchingText.getText().toString();
                 }
-                //dodac trim
                 if(MainToken.categoryId != null && MainToken.searchingName != null)
                 {
                     OpenProductInfoActivity();
@@ -64,6 +63,10 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
+                if(searchingText.getText() != null)
+                {
+                    MainToken.searchingName = searchingText.getText().toString();
+                }
                 OpenCategoryActivity();
             }
         });
