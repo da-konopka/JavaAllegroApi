@@ -69,9 +69,11 @@ public class ProductInfoActivity extends AppCompatActivity {
             count++;
             sum += price;
         }
-        averagePrice = sum/count;
-        averagePrice = Math.floor(averagePrice * 100) / 100;
-
+        if(count > 0)
+        {
+            averagePrice = sum/count;
+            averagePrice = Math.floor(averagePrice * 100) / 100;
+        }
         TVmaxPrice.setText(maxPrice.toString());
         TVminPrice.setText(minPrice.toString());
         TVaveragePrice.setText(averagePrice.toString());
