@@ -3,7 +3,6 @@ package com.example.javaallegroapi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -20,6 +19,8 @@ public class ProductInfoActivity extends AppCompatActivity {
     private TextView TVminPrice;
     private TextView TVaveragePrice;
     private TextView TVcount;
+    private TextView TVinfo1;
+    private TextView TVinfo2;
 
     int count;
     Double maxPrice;
@@ -37,6 +38,8 @@ public class ProductInfoActivity extends AppCompatActivity {
         TVminPrice = (TextView) findViewById(R.id.textViewLessPrice);
         TVaveragePrice = (TextView) findViewById(R.id.textViewAverage);
         TVcount = (TextView) findViewById(R.id.textViewCount);
+        TVinfo1 = (TextView) findViewById(R.id.textViewinfo1);
+        TVinfo2 = (TextView) findViewById(R.id.textViewinfo2);
 
         product = GetProducts();
 
@@ -67,13 +70,14 @@ public class ProductInfoActivity extends AppCompatActivity {
             sum += price;
         }
         averagePrice = sum/count;
+        averagePrice = Math.floor(averagePrice * 100) / 100;
 
         TVmaxPrice.setText(maxPrice.toString());
         TVminPrice.setText(minPrice.toString());
         TVaveragePrice.setText(averagePrice.toString());
         TVcount.setText(String.valueOf(count));
-
-
+        TVinfo1.setText("Wyszukujesz: " + MainToken.searchingName);
+        TVinfo2.setText("Kategoria: " + MainToken.categoryName);
     }
 
     public Product GetProducts()

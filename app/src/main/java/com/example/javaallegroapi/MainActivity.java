@@ -39,6 +39,10 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         searchingText = (EditText) findViewById(R.id.productName);
+        if(MainToken.searchingName != null)
+        {
+            searchingText.setText(MainToken.searchingName);
+        }
         buttonSearch = (Button) findViewById(R.id.searchButton);
         buttonSearch.setOnClickListener(new View.OnClickListener()
         {
@@ -49,7 +53,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     MainToken.searchingName = searchingText.getText().toString();
                 }
-                if(MainToken.categoryId != null && MainToken.searchingName != null)
+                if(MainToken.categoryId != null && searchingText.getText() != null)
                 {
                     OpenProductInfoActivity();
                 }

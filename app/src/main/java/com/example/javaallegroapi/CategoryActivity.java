@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 import com.google.gson.Gson;
@@ -19,16 +20,29 @@ public class CategoryActivity extends AppCompatActivity {
 
     String pom;
 
+    private Button buttonAccept;
+
     SearchView mySearchView;
     ListView myList;
     ArrayList<String> list;
     ArrayAdapter<String> adapter;
     Category category;
+    String listItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
+        buttonAccept = (Button) findViewById(R.id.buttonAccept);
+        buttonAccept.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                MainToken.categoryId = pom;
+                MainToken.categoryName = listItem;
+                OpenMainActivity();
+            }
+        });
         category = getCategories();
         mySearchView = (SearchView) findViewById(R.id.searchView);
         myList = (ListView) findViewById(R.id.myList);
@@ -42,7 +56,7 @@ public class CategoryActivity extends AppCompatActivity {
         myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String listItem = list.get(position);
+                listItem = list.get(position);
 
                 for (Category.CategoriesBean item: category.getCategories())
                 {
